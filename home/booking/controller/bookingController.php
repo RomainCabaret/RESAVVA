@@ -1,13 +1,14 @@
 <?php
 
 
+
 // ---------------------- WEEK BOOK ----------------------
 
 
 function addNewBookingWeek($start, $end, $pdo)
 {
 
-    $query = "INSERT INTO `semaine`(`DATEDEBSEM`, `DATEFINSEM`) VALUES (':start,:end)";
+    $query = "INSERT INTO `semaine`(`DATEDEBSEM`, `DATEFINSEM`) VALUES (:start,:end)";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':start', $start);
@@ -19,6 +20,18 @@ function addNewBookingWeek($start, $end, $pdo)
     } catch (Exception $e) {
         return false;
     }
+}
+
+function getSpecialBookingWeek($start, $end, $pdo)
+{
+
+    $query = "SELECT `DATEDEBSEM`, `DATEFINSEM` FROM `semaine` WHERE `DATEDEBSEM` >= :start AND `DATEFINSEM` <= :end";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':start', $start);
+    $stmt->bindParam(':end', $end);
+
+    return $stmt->fetch();
 }
 // ---------------------- BOOKING ----------------------
 

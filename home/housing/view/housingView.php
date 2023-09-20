@@ -5,9 +5,17 @@ session_start();
 include '../../../bdd.php';
 include '../controller/housingController.php';
 
-$id = $_GET['id'];
+$housing;
 
-$housing = getSpecialHousing($id, $pdo);
+
+if (isset($_GET['id']) && !empty( getSpecialHousing($_GET['id'], $pdo) ) ) {
+    $id = $_GET['id'];
+    $housing = getSpecialHousing($id, $pdo);
+} else {
+    header('location:../../homeView.php');
+}
+
+
 
 ?>
 
@@ -38,6 +46,9 @@ $housing = getSpecialHousing($id, $pdo);
         echo "<li> " . $housing['TARIFSEMHEB'] . "</li>";
         ?>
     </ul>
+    <a href="./../../booking/view/bookingView.php?id=<?php echo $housing['NOHEB']; ?>">
+        <button>Réserver</button>
+    </a>
 </body>
 
 </html>

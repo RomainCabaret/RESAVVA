@@ -5,7 +5,7 @@
 
 function getSpecialHousing($id, $pdo)
 {
-    $query =  "SELECT `CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB` FROM `hebergement` WHERE NOHEB = :id";
+    $query =  "SELECT  `NOHEB`, `CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB` FROM `hebergement` WHERE NOHEB = :id";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
