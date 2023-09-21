@@ -55,21 +55,27 @@ if (isset($_POST['amountPeople'])) {
     $bookingEnd = $_POST['bookingEnd'];
     $amountPeople = $_POST['amountPeople'];
 
-    echo getSpecialBookingWeek('2023-09-01', '2023-09-30', $pdo)['DATEDEBSEM'];
+    #echo getSpecialBookingWeek('2023-09-01', '2023-09-30', $pdo)[0];
 
-    // if (empty(getSpecialBookingWeek($bookingStart, $bookingEnd, $pdo))) {
-    //     if (!addNewBookingWeek($bookingStart, $bookingEnd, $pdo)) {
-    //         echo "error";        
-    //     }
-    // }
+    if (empty(getSpecialBookingWeek($bookingStart, $bookingEnd, $pdo)[0]['DATEDEBSEM'])) {
+        if (!addNewBookingWeek($bookingStart, $bookingEnd, $pdo)) {
+            die("error week");        
+        }
+    }
 
     echo $amountPeople;
     echo '<br>';
     echo $bookingStart;
     echo '<br>';
     echo $bookingEnd;
+    
+    if(addNewBooking($id, $login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)){
+        die ("GG");
+    }
+    else{
+        die("error");
+    }
 
-    addNewBooking($id, $login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo);
 
 }
 

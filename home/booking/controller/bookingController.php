@@ -24,14 +24,15 @@ function addNewBookingWeek($start, $end, $pdo)
 
 function getSpecialBookingWeek($start, $end, $pdo)
 {
-
     $query = "SELECT `DATEDEBSEM`, `DATEFINSEM` FROM `semaine` WHERE `DATEDEBSEM` >= :start AND `DATEFINSEM` <= :end";
-
+    
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':start', $start);
-    $stmt->bindParam(':end', $end);
-
-    return $stmt->fetch();
+    $stmt->bindParam(':start', $start, PDO::PARAM_STR);
+    $stmt->bindParam(':end', $end, PDO::PARAM_STR);
+    
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 // ---------------------- BOOKING ----------------------
 
@@ -44,7 +45,7 @@ function getBooking($pdo)
     $stmt = $pdo->prepare($query);
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetch();
 }
 
 function getSpecialBooking($id, $pdo)
