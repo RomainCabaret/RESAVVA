@@ -20,7 +20,14 @@ body {
   height: 500vh;
 }
 
+.top-container{
+  background-image: url('./../img/home/headerBg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /* ------ HEADER ------ */
+
 
 header {
   display: flex;
@@ -28,7 +35,8 @@ header {
   align-items: center;
   border-bottom: solid #fff;
   border-width: 2px;
-  margin: 10px 5%;
+  margin: 0px 5%;
+  
 }
 
 header h1,
@@ -92,7 +100,7 @@ header button.reg:hover {
 .sub-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 80vh;
+  height: 95vh;
 }
 
 .sub-header h1 {
@@ -108,27 +116,43 @@ header button.reg:hover {
   text-transform: capitalize;
 }
 
+.sub-header .container-left{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.sub-header .container-left .sub-header-map{
+  width: 50%;
+  margin: 10px auto;
+}
+
 .sub-header form {
-  margin: auto;
+  margin: 0 auto;
   padding: 20px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .sub-header select,
 .sub-header button {
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 0px 0px 0px 0px;
   border: 1px solid #e6e6e6;
   background: #f9f9f9;
-  height: 58px;
+  height: 65px;
   padding: 20px;
   font-family: "Poppins", sans-serif;
 }
 
 .sub-header button {
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 0px 5px 5px 0px;
   background: #f9f9f9;
-  height: 58px;
+  height: 65px;
+  cursor: pointer;
 }
 
 .sub-header .btn-search {

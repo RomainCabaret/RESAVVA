@@ -19,39 +19,43 @@
   </head>
 
   <body>
-    <header>
-      <h1>LOGO</h1>
+    <div class="top-container">
+      <header>
+        <h1>LOGO</h1>
 
-      <ul>
-        <li><a href="">Accueil</a></li>
-        <li><a href="">Location</a></li>
-        <li><a href="">Tendance</a></li>
-        <li><a href="">Nous contacter</a></li>
-      </ul>
+        <ul>
+          <li><a href="">Accueil</a></li>
+          <li><a href="">Location</a></li>
+          <li><a href="">Tendance</a></li>
+          <li><a href="">Nous contacter</a></li>
+        </ul>
 
-      <div class="btn-container">
-        <button class="log">Inscription</button>
-        <button class="reg">Connection</button>
-      </div>
-    </header>
-    <section class="sub-header">
-      <h1>
-        Découvrez un séjour inoubliable dans notre charmant refuge, niché au
-        milieu de la nature.
-      </h1>
-      <form>
-        <div>
-          <img src="{{ Storage::url('img/map.png')}}" />
+        <div class="btn-container">
+          <button class="log">Inscription</button>
+          <button class="reg">Connection</button>
         </div>
-        <select name="" id="">
-          <option value="">Tout Type</option>
-        </select>
-        <select name="" id="">
-          <option value="">Alpes</option>
-        </select>
-        <button class="btn-search">S</button>
-      </form>
-    </section>
+      </header>
+      <section class="sub-header">
+        <h1>
+          Découvrez un séjour inoubliable dans notre charmant refuge, niché au
+          milieu de la nature.
+        </h1>
+        <div class="container-left">
+          <img src="../ressouces/img/home/map.png" class="sub-header-map"/>
+          <form>
+            <select name="" id="">
+              <option value="">Tout Type</option>
+            </select>
+            <select name="" id="">
+              <option value="">Alpes</option>
+            </select>
+            <button class="btn-search">
+              <img src="../ressouces/img/ico/search.png" alt="">
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
     <section class="information">
       <div>
         <h2>Le coût de la vie minimum s'occupe de tout</h2>
