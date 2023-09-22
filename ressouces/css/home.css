@@ -20,10 +20,21 @@ body {
   height: 500vh;
 }
 
+button{
+  border: none;
+  cursor: pointer;
+}
+
 .top-container{
   background-image: url('./../img/home/headerBg.png');
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.underline{
+  text-decoration: underline;
+  text-decoration-color: #F4511E;
+  text-underline-offset: 20px;
 }
 
 /* ------ HEADER ------ */
@@ -163,15 +174,327 @@ header button.reg:hover {
 
 .information {
   background-color: #fff;
-  height: 80vh;
+  color: #18191F;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+.information h2{
+  font-size: 59px;
+  margin-left: 80px;
+  margin-top: 60px;
+  text-transform: capitalize;
+}
+
+
+.information .grid-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin-top: 50px;
+  margin-left: 20px;
+}
+
+.information .grid-layout .icon-container{
+  border-radius: 10px;
+  background: #FFF;
+  width: 77px;
+  height: 77px;
+  box-shadow: 0px 12px 19px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 50px;
+}
+.information .grid-layout p {
+  font-size: 26px;
+  margin-top: 20px;
+}
+
+.information .grid-layout .icon-container img{
+  margin: auto;
+}
+
+.information .grid-layout .home-display{
+  grid-area: 1 / 1 / 3 / 2;
+  border-radius: 50px 0px;
 }
 
 /* RENTED SECTION */
 
 .rented-list {
   background-color: #f5f5f5;
-  height: 120vh;
+  height: auto;
+  color: #18191F;
 }
+
+.rented-list .rented-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 80px;
+}
+
+.rented-list .rented-header h2{
+  font-family: 'Inter';
+  font-size: 59px;
+  text-transform: capitalize;
+  margin-top: 60px;
+
+}
+
+.rented-list .rented-header button{
+  font-family: 'Manrope', sans-serif;
+  font-size: 17px;
+  color: #FFF;
+  border: none;
+  width: 200px;
+  height: 65px;
+  border-radius: 5px;
+  background: #F4511E;
+  box-shadow: 0px 1.85185px 3.14815px 0px rgba(248, 90, 71, 0.02), 0px 8.14815px 6.51852px 0px rgba(248, 90, 71, 0.03), 0px 20px 13px 0px rgba(248, 90, 71, 0.04);
+  margin-top: 60px;
+
+}
+
+.rented-list .rented-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin: 80px;
+  grid-row-gap: 90px;
+}
+.rented-list .rented-container .card{
+  font-family: 'DM Sans';
+  width: 370px;
+  border-radius: 26.617px;
+  border: 1px solid #979797;
+  background: #FFF;
+  box-shadow: 0px 34.06929px 36.19862px 0px rgba(0, 0, 0, 0.13);
+  margin: auto;
+}
+
+.rented-list .rented-container .card .placeholder-img{
+  width: 370px;
+  height: 280px;
+}
+
+.rented-list .card .info-rented{
+  margin: 20px;
+}
+
+.rented-list .rented-adress{
+  color: #000;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.642px;
+  text-transform: capitalize;
+}
+
+.rented-list .rented-label{
+  color: #818181;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.642px;
+  text-transform: capitalize;
+  margin-top: 20px;
+}
+
+.rented-list .rented-pricing{
+  color: #F4511E;
+  font-size: 25.552px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.642px;
+  text-transform: capitalize;
+}
+
+.rented-list .card .rented-subinfo{
+  border-top: 1px solid #979797;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.rented-list .card .rented-subinfo div{
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.rented-list .card .rented-subinfo p{
+  color: #000;
+  font-family: 'DM Sans';
+  font-size: 18.099px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.455px;
+}
+
+.card .rented-subinfo .shower-container{
+  border-left: 1px solid #979797;
+  border-right: 1px solid #979797;
+}
+
+.rented-list .pagination-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rented-list .pagination{
+  display: flex;
+  justify-content: center;
+  border: 1px solid #BDBDBD;
+  margin: 50px;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.10);
+}
+
+.rented-list .pagination button{
+  padding: 25px 20px;
+  color: #F4511E;
+  border: 1px solid #E9E9E9;
+  background: #FFF;
+  margin: 0;
+  font-family: 'Montserrat';
+  font-weight: 700;
+}
+
+.rented-list .pagination button:hover{
+  background: #F4511E;
+  color: #FFF;
+  transition: 0.2s;
+}
+
+.rented-list .pagination .is-here{
+  background: #F4511E;
+  color: #FFF;
+}
+
+.rented-list .pagination button:first-child, .rented-list .pagination button:last-child{
+  padding: 25px;
+}
+
+.rented-list .pagination button:first-child{
+  border-right: 1px solid #E9E9E9;
+}
+.rented-list .pagination button:last-child{
+  border-left: 1px solid #E9E9E9;
+}
+
+/* lifestyle SECTION */
+
+/* .lifestyle-container{
+
+} */
+
+.lifestyle-container .grid-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  margin: 180px;
+}
+
+.lifestyle-container .lifestyle-gallery{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.lifestyle-container .lifestyle-gallery div{
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+
+}
+
+.lifestyle-container .lifestyle-gallery p{
+  font-family: 'Inter';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  text-align: center;
+
+}
+
+.lifestyle-container .lifestyle-flexible{
+  background-image: url('../img/home/bedroom.png');
+  width: 250px;
+  height: 334px;
+}
+
+.lifestyle-container .lifestyle-flexible p{
+  position: relative;
+  top: 20px;
+}
+
+.lifestyle-container .lifestyle-happiness{
+  background-image: url('../img/home/bedroom.png');
+  width: 270px;
+  height: 270px;
+  position: relative;
+  top: 60px;
+}
+
+.lifestyle-container .lifestyle-cleaning{
+  background-image: url('../img/home/cleaning.png');
+  width: 212px;
+  height: 285px;
+}
+
+.lifestyle-container .lifestyle-roommate{
+  background-image: url('../img/home/roommate.png');
+  width: 338px;
+  height: 356px;
+  position: relative;
+  right: 30px;
+}
+
+.lifestyle-option{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lifestyle-option .lifestyle-opt-container{
+  font-family: 'Inter';
+  color: #18191F;
+  margin-left: 50px;
+}
+
+.lifestyle-option .lifestyle-opt-container h3{
+  margin: 20px 0;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 54px; /* 135% */
+}
+
+.lifestyle-option .lifestyle-opt-container p{
+  font-weight: 400;
+}
+
+.lifestyle-option .lifestyle-opt-container button{
+  margin-top: 50px;
+  width: 200px;
+  height: 63px;
+  border-radius: 13px;
+  background: #F4511E;
+  font-family: 'Inter';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  color: #FFF;
+}
+
+/* quote SECTION */
 
 .quote-slider {
   background: rgba(244, 81, 30, 0.07);

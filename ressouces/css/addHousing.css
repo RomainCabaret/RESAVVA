@@ -1,0 +1,82 @@
+*,::before,::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1{
+    margin-top: 45px;
+    color: #F4511E;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 114.286% */
+    letter-spacing: 0.1px;
+}
+
+label{
+    font-family: 'Poppins';
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 141.176% */
+    letter-spacing: 0.2px;
+}
+
+input, select{
+    border-radius: 5px;
+    border: 1px solid #E6E6E6;
+    background: #F9F9F9;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 200% */
+    letter-spacing: 0.2px;
+    padding-left: 20px;
+    height: 30px;
+}
+
+input[type='checkbox']{
+    width: 25px!important;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 90%;
+    
+}
+
+form{
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+.star{
+    color: #F4511E;
+}
+
+.grid-layout{
+    margin: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 20px;
+    
+
+}
+
+.grid-layout div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.grid-layout input, .grid-layout select{
+    width: 60%;
+}
