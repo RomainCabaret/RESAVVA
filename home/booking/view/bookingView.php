@@ -41,7 +41,7 @@ include '../../housing/controller/housingController.php';
 
 //$id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo
 
-$id = 10;
+$id = 12;
 $login = $_SESSION['login'];
 #$housingId = $_GET['id'];
 $housingId = 201;

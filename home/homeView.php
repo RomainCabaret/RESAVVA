@@ -36,7 +36,6 @@ $path = "./housing/view/housingView.php?id="
                 foreach ($housing as $house => $row) {
                     echo " <a href='" . $path . $row['NOHEB'] . "'><li> " . $row['NOMHEB'] . "</li></a>";
                     echo "<img src='../ressouces/img/post/" . $row['PHOTOHEB'] . "' width='50' height='50' >";
-                    
                 }
                 ?>
             </ul>

@@ -25,6 +25,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 
 <head>
     <link rel="shortcut icon" href="./ressouces/img/ico/favicon.png" type="image/x-icon">
+    <meta name="description" content="Connectez-vous facilement à votre compte sur notre plateforme de voyage de confiance, similaire à Airbnb. Accédez à des offres uniques, gérez vos réservations en un clic et explorez des hébergements exceptionnels à travers le monde. Connectez-vous pour vivre l'expérience de voyage parfaite dès maintenant !">
     <?php include './ressouces/head/head.html' ?>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
