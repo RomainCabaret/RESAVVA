@@ -44,7 +44,7 @@ include '../../housing/controller/housingController.php';
 $id = 12;
 $login = $_SESSION['login'];
 #$housingId = $_GET['id'];
-$housingId = 201;
+$housingId = 1;
 $housingType = "CC";
 $bookingPrice = 10;
 $pricePerWeek = 10;
@@ -69,7 +69,7 @@ if (isset($_POST['amountPeople'])) {
     echo '<br>';
     echo $bookingEnd;
     
-    if(addNewBooking($id, $login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)){
+    if(addNewBooking($login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)){
         die ("GG");
     }
     else{

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 20, 2023 at 07:22 PM
+-- Generation Time: Oct 11, 2023 at 05:37 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -45,7 +45,7 @@ CREATE TABLE `compte` (
 --
 
 INSERT INTO `compte` (`USER`, `MDP`, `NOMCPTE`, `PRENOMCPTE`, `DATEINSCRIP`, `DATEFERME`, `TYPECOMPTE`, `ADRMAILCPTE`, `NOTELCPTE`, `NOPORTCPTE`) VALUES
-('aa', 'aa', 'aa', 'aa', '2023-09-17', '2023-09-27', 'AAA', 'aa@gmail.com', 'aaa', 'aa');
+('aa', 'aa', 'aa', 'aa', '2023-09-17', '2023-09-27', 'adm', 'aa@gmail.com', 'aaa', 'aa');
 
 -- --------------------------------------------------------
 
@@ -87,15 +87,6 @@ CREATE TABLE `hebergement` (
   `TARIFSEMHEB` decimal(7,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `hebergement`
---
-
-INSERT INTO `hebergement` (`NOHEB`, `CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES
-(201, 'aa', '10', 10, 10, 1, 10, '10', '10', '10', '10', '6506cbad548ef.png', '10.00'),
-(205, 'aa', 'fullstack', 10, 1, 0, 10, '10', '10', '10', '10', '6506cd07dbae9.png', '10.00'),
-(250, 'java', '8', 8, 8, 0, 8, '8', '8', '8', '8', '6506d1c762c31.jpg', '8.00');
-
 -- --------------------------------------------------------
 
 --
@@ -115,14 +106,6 @@ CREATE TABLE `resa` (
   `TARIFSEMRESA` decimal(7,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `resa`
---
-
-INSERT INTO `resa` (`NORESA`, `USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES
-(50, 'aa', '2023-09-01', 250, 'CC', '2023-09-01', '2023-09-30', '78.00', 8, '10.11'),
-(501, 'aa', '2023-09-01', 205, 'CC', '2023-09-01', '2023-09-30', '78.00', 8, '10.11');
-
 -- --------------------------------------------------------
 
 --
@@ -133,13 +116,6 @@ CREATE TABLE `semaine` (
   `DATEDEBSEM` date NOT NULL,
   `DATEFINSEM` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `semaine`
---
-
-INSERT INTO `semaine` (`DATEDEBSEM`, `DATEFINSEM`) VALUES
-('2023-09-01', '2023-09-30');
 
 -- --------------------------------------------------------
 
@@ -157,18 +133,9 @@ CREATE TABLE `type_heb` (
 --
 
 INSERT INTO `type_heb` (`CODETYPEHEB`, `NOMTYPEHEB`) VALUES
-('*****', 'aa'),
-('a', 'a'),
-('aa', 'aa'),
-('c#', 'c#'),
-('cc', 'cc'),
-('dd', 'dd'),
-('java', 'java'),
-('ok', 'ok'),
-('ooo', 'ooo'),
-('x', 'aaa'),
-('xd', 'xd'),
-('zzz', 'zzz');
+('Au', 'Auberge'),
+('Ch', 'Chalet'),
+('Ho', 'Hôtel');
 
 --
 -- Indexes for dumped tables
@@ -216,6 +183,22 @@ ALTER TABLE `type_heb`
   ADD PRIMARY KEY (`CODETYPEHEB`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `hebergement`
+--
+ALTER TABLE `hebergement`
+  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `resa`
+--
+ALTER TABLE `resa`
+  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -231,8 +214,8 @@ ALTER TABLE `hebergement`
 ALTER TABLE `resa`
   ADD CONSTRAINT `resa_ibfk_1` FOREIGN KEY (`USER`) REFERENCES `compte` (`USER`),
   ADD CONSTRAINT `resa_ibfk_2` FOREIGN KEY (`DATEDEBSEM`) REFERENCES `semaine` (`DATEDEBSEM`),
-  ADD CONSTRAINT `resa_ibfk_3` FOREIGN KEY (`NOHEB`) REFERENCES `hebergement` (`NOHEB`),
-  ADD CONSTRAINT `resa_ibfk_4` FOREIGN KEY (`CODEETATRESA`) REFERENCES `etat_resa` (`CODEETATRESA`);
+  ADD CONSTRAINT `resa_ibfk_4` FOREIGN KEY (`CODEETATRESA`) REFERENCES `etat_resa` (`CODEETATRESA`),
+  ADD CONSTRAINT `resa_ibfk_5` FOREIGN KEY (`NOHEB`) REFERENCES `hebergement` (`NOHEB`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

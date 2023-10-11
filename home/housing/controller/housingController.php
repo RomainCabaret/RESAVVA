@@ -25,9 +25,9 @@ function getHousing($pdo)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function addNewHousing($id, $type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)
+function addNewHousing($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)
 {
-    $query = "INSERT INTO `hebergement`(`NOHEB`, `CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES (:id,:type,:name,:nbplace,:surface,:internet,:dateheb,:secteur,:orientation,:state,:description,:picture,:pricing)";
+    $query = "INSERT INTO `hebergement`(`CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES (:type,:name,:nbplace,:surface,:internet,:dateheb,:secteur,:orientation,:state,:description,:picture,:pricing)";
 
     if (isset($picture) && $picture['error'] === UPLOAD_ERR_OK) {
 
@@ -37,11 +37,7 @@ function addNewHousing($id, $type, $name, $NBplace, $surface, $internet, $dateHE
 
         $imgName = strtolower($uuid . '.' . $extension);
 
-        // $imgType = $picture['type'];
-        // $imgData = file_get_contents($picture['tmp_name']);
-
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':nbplace', $NBplace);

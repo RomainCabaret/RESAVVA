@@ -25,7 +25,6 @@ if (
 ) {
 
 
-    $id = 251;
     $type = $_POST['CODETYPEHEB'];
     $name = $_POST['name'];
     $NBplace = $_POST['nbplace'];
@@ -41,7 +40,7 @@ if (
 
 
     $name = $_POST['name'];
-    if (addNewHousing($id, $type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)) {
+    if (addNewHousing($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)) {
         header("location:../../homeView.php");
     }
     $errorMSG = "failed to add housing type";
@@ -61,76 +60,6 @@ if (
     <title>Document</title>
 </head>
 
-<!-- <body>
-    <h1>Ajouter un hebergement</h1>
-    <?php echo $errorMSG ?>
-    <form action="addHousingView.php" method="post" enctype="multipart/form-data">
-
-        <?php showSelect(getHousingType($pdo), "CODETYPEHEB", "NOMTYPEHEB") ?>
-
-        <br>
-
-        <label for="name">Nom</label>
-        <input type="text" name="name" id="name">
-
-        <br>
-
-        <label for="nbplace">Nombre de place</label>
-        <input type="number" name="nbplace" id="nbplace">
-
-        <br>
-
-        <label for="surface">Surface</label>
-        <input type="number" name="surface" id="surface">
-
-        <br>
-
-        <label for="internet">Internet</label>
-        <input type="checkbox" name="internet" id="internet">
-
-        <br>
-
-        <label for="dateheb">Année de l'hébergement</label>
-        <input type="text" name="dateheb" id="dateheb">
-
-        <br>
-
-        <label for="secteur">Secteur de l'hébergement</label>
-        <input type="text" name="secteur" id="secteur">
-
-        <br>
-
-        <label for="orientation">Orientation</label>
-        <input type="text" name="orientation" id="orientation">
-
-        <br>
-
-        <label for="state">Etat de l'hébergement</label>
-        <input type="text" name="state" id="state">
-
-        <br>
-
-        <label for="description">Description</label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
-
-        <br>
-
-        <label for="picture">Photo de l'hébergement</label>
-        <input type="file" name="picture" id="picture" accept="image/*">
-
-        <br>
-
-        <label for="pricing">Tarif</label>
-        <input type="number" name="pricing" id="pricing">
-
-        <br>
-        <br>
-
-        <button>Enregister</button>
-    </form>
-
-</body> -->
-
 <body>
     <div class="container">
         <h1>Ajouter une nouvelle propriété</h1>
@@ -139,20 +68,20 @@ if (
             <div class="grid-layout">
                 <div>
                     <label for="name">Nom : <span class="star">*</span></label>
-                    <input type="text" name="name" id="name" placeholder="Entrer un nom" />
+                    <input type="text" name="name" id="name" placeholder="Entrer un nom" maxlength="40" />
                 </div>
 
 
                 <div>
                     <label for="dateheb">Année de l'hébergement : <span class="star">*</span></label>
-                    <input type="number" name="dateheb" id="dateheb">
+                    <input type="number" name="dateheb" id="dateheb" placeholder="Entrer l'année">
                 </div>
 
 
                 <div>
                     <label for="nbplace">Nombre de places : <span class="star">*</span></label>
 
-                    <input type="number" name="nbplace" id="nbplace" placeholder="Entrer le nombre d'occupant possible" />
+                    <input type="number" name="nbplace" id="nbplace" placeholder="Entrer le nombre d'occupant possible" max="5">
                 </div>
                 <div>
                     <label for="">Type d'hébergement : <span class="star">*</span></label>
@@ -175,19 +104,19 @@ if (
                 <div>
                     <label for="secteur">Secteur : <span class="star">*</span></label>
 
-                    <input type="text" name="secteur" id="secteur" placeholder="Entrer un nom" />
+                    <input type="text" name="secteur" id="secteur" placeholder="Entrer un nom" maxlength="15" />
                 </div>
 
                 <div>
                     <label for="orientation">Orientation : <span class="star">*</span></label>
 
-                    <input type="text" placeholder="Entrer un nom" name="orientation" id="orientation" />
+                    <input type="text" placeholder="Entrer un nom" name="orientation" id="orientation" maxlength="5" />
                 </div>
 
                 <div>
                     <label for="state">Etat : <span class="star">*</span></label>
 
-                    <input type="text" placeholder="Entrer un Etat" name="state" id="state" />
+                    <input type="text" placeholder="Entrer un Etat" name="state" id="state" maxlength="32" />
                 </div>
                 <div>
                     <label for="internet">Internet : <span class="star">*</span></label>
@@ -198,7 +127,7 @@ if (
             <div class="bottom-container">
                 <div class="desc-container">
                     <label for="description">Description : <span class="star">*</span></label>
-                    <textarea placeholder="Enter une description" name="description" id="description" cols="30" rows="10"></textarea>
+                    <textarea placeholder="Enter une description" name="description" id="description" cols="30" rows="10" maxlength="200"></textarea>
                 </div>
 
                 <div class="img-container">

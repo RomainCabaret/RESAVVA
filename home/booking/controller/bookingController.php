@@ -58,13 +58,12 @@ function getSpecialBooking($id, $pdo)
     return $stmt->fetch();
 }
 
-function addNewBooking($id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
+function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
 {
-    $query = "INSERT INTO `resa` (`NORESA`, `USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES (:id, :user, :dateStart, :housing, :typeHousing, :dateBooking , :dateEnd, :priceBooking, :amountPeople, :pricePerWeek );";
+    $query = "INSERT INTO `resa` (`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES (:user, :dateStart, :housing, :typeHousing, :dateBooking , :dateEnd, :priceBooking, :amountPeople, :pricePerWeek );";
 
 
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':user', $user);
     $stmt->bindParam(':dateStart', $dateStart);
     $stmt->bindParam(':housing', $housing);

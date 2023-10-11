@@ -69,21 +69,6 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
             </form>
         </div>
     </div>
-    <!-- <form action="index.php" method="post">
-
-        <label for="login">Login</label>
-        <input type="text" name="login" placeholder="login" required>
-
-        <br>
-
-        <label for="password" id="password">Password</label>
-        <input type="text" name="password" id="password" placeholder="password" required>
-
-        <br>
-
-        <button>Login</button>
-    </form> -->
-
 </body>
 
 </html>
