@@ -58,13 +58,11 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
                 </label>
                 <input type="password" name="password" id="password" placeholder="Entrer votre mot de passe" required />
 
-
                 <?php
 
                 echo '<p class="error-message">' . $errorMSG  . '</p>';
 
                 ?>
-
                 <button>Connexion</button>
             </form>
         </div>
