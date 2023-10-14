@@ -42,9 +42,9 @@ include '../../housing/controller/housingController.php';
 //$id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo
 
 $id = 12;
-$login = $_SESSION['login'];
+$login = $_SESSION['account']['USER'];
 #$housingId = $_GET['id'];
-$housingId = 1;
+$housingId = 6;
 $housingType = "CC";
 $bookingPrice = 10;
 $pricePerWeek = 10;

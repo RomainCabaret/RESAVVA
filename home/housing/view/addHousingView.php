@@ -2,7 +2,7 @@
 session_start();
 
 
-if(!isset($_SESSION['account']) || $_SESSION['account']['TYPECOMPTE'] == "VIS"){
+if (!isset($_SESSION['account']) || $_SESSION['account']['TYPECOMPTE'] == "VIS") {
     header("location:./../../homeView.php");
 }
 
@@ -132,7 +132,7 @@ if (
                         <option value="Parfais">Parfais</option>
                         <option value="Bon">Bon</option>
                         <option value="Correct">Correct</option>
-                        <option value="Mauvais">Mauvais</option>
+                        <option value="Renovation">Renovation</option>
                     </select>
                 </div>
                 <div>

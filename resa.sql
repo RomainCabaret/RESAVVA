@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 11, 2023 at 05:37 PM
+-- Generation Time: Oct 14, 2023 at 10:43 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -45,7 +45,12 @@ CREATE TABLE `compte` (
 --
 
 INSERT INTO `compte` (`USER`, `MDP`, `NOMCPTE`, `PRENOMCPTE`, `DATEINSCRIP`, `DATEFERME`, `TYPECOMPTE`, `ADRMAILCPTE`, `NOTELCPTE`, `NOPORTCPTE`) VALUES
-('aa', 'aa', 'aa', 'aa', '2023-09-17', '2023-09-27', 'adm', 'aa@gmail.com', 'aaa', 'aa');
+('aa', 'aa', 'aa', 'aa', '2023-09-17', '2023-11-15', 'ADM', 'aa@gmail.com', 'aaa', 'aa'),
+('bb', 'bb', 'bb', 'bb', '2023-09-17', '2023-10-31', 'GES', 'bb@gmail.com', 'bbb', 'bb'),
+('cc', 'cc', 'cc', 'cc', '2023-09-17', '2023-10-31', 'VIS', 'cc@gmail.com', 'ccc', 'cc'),
+('dd', 'dd', 'dd', 'dd', '2023-09-17', '2023-10-31', 'AAA', 'dd@gmail.com', 'ddd', 'dd'),
+('yy', 'yy', 'yy', 'yy', '2023-09-17', '2023-09-29', 'VIS', 'yy@gmail.com', 'yyy', 'yy'),
+('zz', 'zz', 'zz', 'zz', '2023-09-17', '2023-09-29', 'ADM', 'zz@gmail.com', 'zzz', 'zz');
 
 -- --------------------------------------------------------
 
@@ -63,7 +68,12 @@ CREATE TABLE `etat_resa` (
 --
 
 INSERT INTO `etat_resa` (`CODEETATRESA`, `NOMETATRESA`) VALUES
-('CC', 'OMG');
+('AN', 'Annulée'),
+('AV', 'Arrhes versées'),
+('BL', 'Bloquée'),
+('CR', 'Clés retirées'),
+('SL', 'Solde'),
+('TE', 'Terminée');
 
 -- --------------------------------------------------------
 
@@ -133,9 +143,11 @@ CREATE TABLE `type_heb` (
 --
 
 INSERT INTO `type_heb` (`CODETYPEHEB`, `NOMTYPEHEB`) VALUES
-('Au', 'Auberge'),
-('Ch', 'Chalet'),
-('Ho', 'Hôtel');
+('APPAR', 'Appartement'),
+('AUTR', 'Autre'),
+('BUNGA', 'Bungalow'),
+('CHALE', 'Chalet'),
+('MOBHO', 'Mobil home');
 
 --
 -- Indexes for dumped tables
@@ -190,13 +202,13 @@ ALTER TABLE `type_heb`
 -- AUTO_INCREMENT for table `hebergement`
 --
 ALTER TABLE `hebergement`
-  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `resa`
 --
 ALTER TABLE `resa`
-  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

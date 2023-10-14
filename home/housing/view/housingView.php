@@ -5,10 +5,14 @@ session_start();
 include '../../../bdd.php';
 include '../controller/housingController.php';
 
+if (!isset($_SESSION['account'])) {
+    header("location:./../../homeView.php");
+}
+
 $housing;
 
 
-if (isset($_GET['id']) && !empty( getSpecialHousing($_GET['id'], $pdo) ) ) {
+if (isset($_GET['id']) && !empty(getSpecialHousing($_GET['id'], $pdo))) {
     $id = $_GET['id'];
     $housing = getSpecialHousing($id, $pdo);
 } else {
@@ -32,18 +36,18 @@ if (isset($_GET['id']) && !empty( getSpecialHousing($_GET['id'], $pdo) ) ) {
     <h1>House</h1>
     <ul>
         <?php
-        echo "<li> " . $housing['CODETYPEHEB'] . "</li>";
-        echo "<li> " . $housing['NOMHEB'] . "</li>";
-        echo "<li> " . $housing['NBPLACEHEB'] . "</li>";
-        echo "<li> " . $housing['SURFACEHEB'] . "</li>";
-        echo "<li> " . $housing['INTERNET'] . "</li>";
-        echo "<li> " . $housing['ANNEEHEB'] . "</li>";
-        echo "<li> " . $housing['SECTEURHEB'] . "</li>";
-        echo "<li> " . $housing['ORIENTATIONHEB'] . "</li>";
-        echo "<li> " . $housing['ETATHEB'] . "</li>";
-        echo "<li> " . $housing['DESCRIHEB'] . "</li>";
+        echo "<li> <b>Code Type</b> : " . $housing['CODETYPEHEB'] . "</li>";
+        echo "<li> <b>Nom</b> :  " . $housing['NOMHEB'] . "</li>";
+        echo "<li> <b>Place</b> : " . $housing['NBPLACEHEB'] . "</li>";
+        echo "<li> <b>Surface</b> : " . $housing['SURFACEHEB'] . "</li>";
+        echo "<li> <b>Internet</b> : " . $housing['INTERNET'] . "</li>";
+        echo "<li> <b>Année</b> : " . $housing['ANNEEHEB'] . "</li>";
+        echo "<li> <b>Secteur</b> : " . $housing['SECTEURHEB'] . "</li>";
+        echo "<li> <b>Orientation</b> : " . $housing['ORIENTATIONHEB'] . "</li>";
+        echo "<li> <b>Etat</b> : " . $housing['ETATHEB'] . "</li>";
+        echo "<li> <b>Description</b> : " . $housing['DESCRIHEB'] . "</li>";
         echo "<img src='../../../ressouces/img/post/" . $housing['PHOTOHEB'] .  "' width='50' height='50'>";
-        echo "<li> " . $housing['TARIFSEMHEB'] . "</li>";
+        echo "<li> <b>Tarif</b> : " . $housing['TARIFSEMHEB'] . "</li>";
         ?>
     </ul>
     <a href="./../../booking/view/bookingView.php?id=<?php echo $housing['NOHEB']; ?>">

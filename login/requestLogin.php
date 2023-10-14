@@ -1,25 +1,43 @@
 <?php
 
-function getUser($login, $password, $pdo){
-    $query = "SELECT `USER`, `MDP` FROM `compte` WHERE USER = :login AND MDP = :password";
+function getUser($login, $password, $pdo)
+{
+    try {
+        $validableAccountType = ['ADM', 'GES', 'VIS'];
 
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':login', $login);
-    $stmt->bindParam(':password', $password);
-    $stmt->execute();
+        $query = "SELECT `USER`, `MDP`, `DATEFERME`, `TYPECOMPTE` FROM `compte` WHERE USER = :login AND MDP = :password";
+
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':login', $login);
+        $stmt->bindParam(':password', $password);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $result = $stmt->rowCount();
 
 
-    $result = $stmt->rowCount();
-    
-    if($result == 1){
-        return true;
-    }
-    else{
-        return false;
+
+        if ($result == 1 && (date('Y-m-d') <= $user['DATEFERME'] || $user['TYPECOMPTE'] != "VIS") && in_array($user['TYPECOMPTE'], $validableAccountType)) {
+            return true;
+        } else {
+            if ($result == 0) {
+                return "Identifiant ou mot de passe incorrect.";
+            } elseif (!in_array($user['TYPECOMPTE'], $validableAccountType)) {
+                return "Votre compte semble avoir un type inconnue. <br>Merci de contacter un administrateur";
+            } elseif (date('Y-m-d') >= $user['DATEFERME'] && $user['TYPECOMPTE'] == "VIS") {
+                return "Votre compte est expirer.";
+            } else {
+                return "Erreur interne, Merci de contacter l'administrateur";
+            }
+        }
+    } catch (Exception $e) {
+        return "Erreur interne, Merci de contacter l'administrateur";
     }
 }
 
-function getUserInfos($login, $password, $pdo){
+function getUserInfos($login, $password, $pdo)
+{
     $query = "SELECT * FROM `compte` WHERE USER = :login AND MDP = :password";
 
     $stmt = $pdo->prepare($query);
@@ -45,6 +63,3 @@ function getUserInfos($login, $password, $pdo){
 
     return $userInfos;
 }
-
-
-?>
