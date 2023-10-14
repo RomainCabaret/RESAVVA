@@ -2,10 +2,16 @@
 session_start();
 
 
+if(!isset($_SESSION['account']) || $_SESSION['account']['TYPECOMPTE'] == "VIS"){
+    header("location:./../../homeView.php");
+}
+
+
 include '../../../bdd.php';
 include '../controller/housingController.php';
 
 include '../../../ressouces/component/select.php';
+
 
 $errorMSG = "";
 
@@ -68,20 +74,20 @@ if (
             <div class="grid-layout">
                 <div>
                     <label for="name">Nom : <span class="star">*</span></label>
-                    <input type="text" name="name" id="name" placeholder="Entrer un nom" maxlength="40" />
+                    <input type="text" name="name" id="name" placeholder="Entrer un nom" maxlength="40" required />
                 </div>
 
 
                 <div>
                     <label for="dateheb">Année de l'hébergement : <span class="star">*</span></label>
-                    <input type="number" name="dateheb" id="dateheb" placeholder="Entrer l'année">
+                    <input type="number" name="dateheb" id="dateheb" placeholder="Entrer l'année" required>
                 </div>
 
 
                 <div>
                     <label for="nbplace">Nombre de places : <span class="star">*</span></label>
 
-                    <input type="number" name="nbplace" id="nbplace" placeholder="Entrer le nombre d'occupant possible" max="5">
+                    <input type="number" name="nbplace" id="nbplace" placeholder="Entrer le nombre d'occupant possible" max="5" required>
                 </div>
                 <div>
                     <label for="">Type d'hébergement : <span class="star">*</span></label>
@@ -92,31 +98,42 @@ if (
                 <div>
                     <label for="surface">Surface : <span class="star">*</span></label>
 
-                    <input type="number" name="surface" id="surface" placeholder="Entrer la superficie" />
+                    <input type="number" name="surface" id="surface" placeholder="Entrer la superficie" required />
                 </div>
 
                 <div>
                     <label for="pricing">Prix : <span class="star">*</span></label>
 
-                    <input type="number" name="pricing" id="pricing" placeholder="Entrer un prix" />
+                    <input type="number" name="pricing" id="pricing" placeholder="Entrer un prix" required />
                 </div>
 
                 <div>
                     <label for="secteur">Secteur : <span class="star">*</span></label>
 
-                    <input type="text" name="secteur" id="secteur" placeholder="Entrer un nom" maxlength="15" />
+                    <input type="text" name="secteur" id="secteur" placeholder="Entrer un nom" maxlength="15" required />
                 </div>
 
                 <div>
                     <label for="orientation">Orientation : <span class="star">*</span></label>
 
-                    <input type="text" placeholder="Entrer un nom" name="orientation" id="orientation" maxlength="5" />
+                    <select name="orientation" id="orientation">
+                        <option value="Nord">Nord</option>
+                        <option value="Sud">Sud</option>
+                        <option value="Est">Est</option>
+                        <option value="West">Ouest</option>
+                    </select>
                 </div>
 
                 <div>
                     <label for="state">Etat : <span class="star">*</span></label>
 
-                    <input type="text" placeholder="Entrer un Etat" name="state" id="state" maxlength="32" />
+                    <!-- <input type="text" placeholder="Entrer un Etat" name="state" id="state" maxlength="32" required /> -->
+                    <select name="state" id="state">
+                        <option value="Parfais">Parfais</option>
+                        <option value="Bon">Bon</option>
+                        <option value="Correct">Correct</option>
+                        <option value="Mauvais">Mauvais</option>
+                    </select>
                 </div>
                 <div>
                     <label for="internet">Internet : <span class="star">*</span></label>
@@ -127,7 +144,7 @@ if (
             <div class="bottom-container">
                 <div class="desc-container">
                     <label for="description">Description : <span class="star">*</span></label>
-                    <textarea placeholder="Enter une description" name="description" id="description" cols="30" rows="10" maxlength="200"></textarea>
+                    <textarea placeholder="Enter une description" name="description" id="description" cols="30" rows="10" maxlength="200" required></textarea>
                 </div>
 
                 <div class="img-container">

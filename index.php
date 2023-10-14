@@ -11,7 +11,10 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
     $password = $_POST['password'];
 
     if (getUser($login, $password, $pdo)) {
-        $_SESSION['login'] = $login;
+        $account = getUserInfos($login, $password, $pdo);
+        
+ 
+        $_SESSION['account'] = $account;
         header("location:./home/homeView.php");
     } else {
         $errorMSG = "Identifiant ou mot de passe incorrect";

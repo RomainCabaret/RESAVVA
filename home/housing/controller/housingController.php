@@ -13,6 +13,20 @@ function getSpecialHousing($id, $pdo)
     return $stmt->fetch();
 }
 
+function getSearchHousing($search, $pdo)
+{
+    $query = "SELECT * FROM `hebergement` WHERE `NOMHEB` LIKE :search ";
+    $stmt = $pdo->prepare($query);
+
+    $search = "%" . $search . "%";
+    
+    $stmt->bindParam(':search', $search);
+    $stmt->execute();
+
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getHousing($pdo)
 {
 
@@ -108,5 +122,13 @@ function getHousingType($pdo)
     $stmt->execute();
 
 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); $query =  "SELECT `CODETYPEHEB`, `NOMTYPEHEB` FROM `type_heb`";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+
+
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+

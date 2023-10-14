@@ -4,11 +4,23 @@ session_start();
 
 include '../bdd.php';
 
+#print_r($_SESSION['account']);
+
+if(!isset($_SESSION['account'])){
+    header("location:./../index.php");
+}
 
 include './housing/controller/housingController.php';
 
 
-$housing = getHousing($pdo);
+// $housing = getHousing($pdo);
+if(isset($_GET['search'])){
+
+    $housing = getSearchHousing($_GET['search'], $pdo);
+}
+else{
+    $housing = getSearchHousing("", $pdo);
+}
 
 $path = "./housing/view/housingView.php?id="
 ?>
@@ -30,8 +42,16 @@ $path = "./housing/view/housingView.php?id="
 </head>
 
 <body style="background:black">
-    <a href="./housing/view/addHousingView.php">Crée un hébergement</a>
-    <a href="./housing/view/addHousingTypeView.php">Crée un type d'hébergement</a>
+    <?php 
+    if($_SESSION['account']['TYPECOMPTE'] != "VIS"){
+        echo '<a href="./housing/view/addHousingView.php">Crée un hébergement</a>';
+        echo '<br>';
+        // echo '<a href="./housing/view/addHousingTypeView.php">Crée un type d\'hébergement</a>';
+        // echo '<br>';
+    }
+    ?>
+    <!-- <a href="./housing/view/addHousingView.php">Crée un hébergement</a>
+    <a href="./housing/view/addHousingTypeView.php">Crée un type d'hébergement</a> -->
     <a href="temporalView.html">View</a>
     <!-- <h1>NAV</h1>
     <ul>
@@ -62,6 +82,11 @@ $path = "./housing/view/housingView.php?id="
             <h2><span class="underline">Liste </span>des propriétés</h2>
             <button>Voir tous les biens</button>
         </div>
+        <form action="" method="GET">
+            <input type="text" name="search" placeholder="Rechercher">
+            <button type="submit">Rechercher</button>
+        </form>
+                
         <div class="rented-container">
 
             <?php
