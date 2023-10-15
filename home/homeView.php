@@ -98,14 +98,12 @@ $path = "./housing/view/housingView.php?id="
             <?php
 
             foreach ($housing as $row) {
-                // echo " <a href='" . $path . $row['NOHEB'] . "'><li> " . $row['NOMHEB'] . "</li></a>";
-                // echo "<img src='../ressouces/img/post/" . $row['PHOTOHEB'] . "' class='placeholder-img' >";
 
             ?>
                 <div class="card">
                     <?php
                     echo " <a href='" . $path . $row['NOHEB'] . "'>";
-                    echo "<img src='../ressouces/img/post/" . $row['PHOTOHEB'] . "' class='placeholder-img' >";
+                    echo "<img src='../ressouces/img/post/" . $row['PHOTOHEB'] . "' class='placeholder-img' alt='illustration du logement'>";
                     echo "</a>";
                     ?>
                     <div class="info-rented">
@@ -117,15 +115,15 @@ $path = "./housing/view/housingView.php?id="
                     </div>
                     <div class="rented-subinfo">
                         <div class="bedroom-container">
-                            <img src="../ressouces/img/ico/Shower.svg" alt="" />
+                            <img src="../ressouces/img/ico/Shower.svg" alt="icone Internet" />
                             <p><?php echo htmlspecialchars($row['INTERNET']) ?></p>
                         </div>
                         <div class="shower-container">
-                            <img src="../ressouces/img/ico/Bed.svg" alt="" />
+                            <img src="../ressouces/img/ico/Bed.svg" alt="icone lits" />
                             <p><?php echo htmlspecialchars($row['NBPLACEHEB']) ?></p>
                         </div>
                         <div class="size-container">
-                            <img src="../ressouces/img/ico/Size.svg" alt="" />
+                            <img src="../ressouces/img/ico/Size.svg" alt="icone surface" />
                             <p><?php echo htmlspecialchars($row['SURFACEHEB']) ?>m²</p>
                         </div>
                     </div>
