@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 14, 2023 at 10:43 AM
+-- Generation Time: Oct 15, 2023 at 03:05 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -144,10 +144,10 @@ CREATE TABLE `type_heb` (
 
 INSERT INTO `type_heb` (`CODETYPEHEB`, `NOMTYPEHEB`) VALUES
 ('APPAR', 'Appartement'),
-('AUTR', 'Autre'),
 ('BUNGA', 'Bungalow'),
 ('CHALE', 'Chalet'),
-('MOBHO', 'Mobil home');
+('MOBHO', 'Mobil home'),
+('ZAUTR', 'Autre');
 
 --
 -- Indexes for dumped tables
@@ -202,13 +202,13 @@ ALTER TABLE `type_heb`
 -- AUTO_INCREMENT for table `hebergement`
 --
 ALTER TABLE `hebergement`
-  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `resa`
 --
 ALTER TABLE `resa`
-  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

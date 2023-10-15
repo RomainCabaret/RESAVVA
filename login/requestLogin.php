@@ -17,7 +17,6 @@ function getUser($login, $password, $pdo)
         $result = $stmt->rowCount();
 
 
-
         if ($result == 1 && (date('Y-m-d') <= $user['DATEFERME'] || $user['TYPECOMPTE'] != "VIS") && in_array($user['TYPECOMPTE'], $validableAccountType)) {
             return true;
         } else {

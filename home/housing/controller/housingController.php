@@ -1,5 +1,40 @@
 <?php
 
+// ---------------------- VERIFICATION ----------------------
+
+
+function verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing)
+{
+    $isNameValid = (strlen($name) > 0 && strlen($name) <= 28 && !empty($name));
+    $isNBplaceValid = (is_numeric($NBplace) && $NBplace > 0 && $NBplace <= 10);
+    $isSurfaceValid = (is_numeric($surface) && $surface >= 10 && $surface <= 1000);
+    $isInternetValid = (is_numeric($internet) && $internet == 0 || $internet === 1);
+    $isDateValid = (is_numeric($dateHEB) && $dateHEB >= 1975 && $dateHEB < (date('Y') + 1));
+    $isSecteurValid = (in_array($secteur, ['Zone Ski', 'Zone pâturage', 'Zone loisir', 'Zones Refuge']));
+    $isOrientationValid = in_array($orientation, ['Nord', 'Sud', 'Est', 'West']);
+    $isStateValid = in_array($state, ['Parfais', 'Bon', 'Correct', 'Renovation']);
+    $isDescriptionValid = (strlen($description) <= 200);
+    $isPricingValid = (is_numeric($pricing) && $pricing >= 20 && $pricing <= 10000);
+
+    if (
+        $isNameValid &&
+        $isNBplaceValid &&
+        $isSurfaceValid &&
+        $isInternetValid &&
+        $isDateValid &&
+        $isDateValid &&
+        $isSecteurValid &&
+        $isOrientationValid &&
+        $isStateValid &&
+        $isDescriptionValid &&
+        $isPricingValid
+    ) {
+        return true;
+    }
+    return false;
+}
+
+
 
 // ---------------------- HOUSING ----------------------
 
@@ -20,7 +55,7 @@ function getSearchHousing($search, $type, $pdo)
 
     $search = "%" . $search . "%";
     $type = "%" . $type . "%";
-    
+
 
     $stmt->bindParam(':search', $search);
     $stmt->bindParam(':type', $type);
@@ -43,51 +78,111 @@ function getHousing($pdo)
 
 function addNewHousing($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)
 {
-    $query = "INSERT INTO `hebergement`(`CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES (:type,:name,:nbplace,:surface,:internet,:dateheb,:secteur,:orientation,:state,:description,:picture,:pricing)";
+    try {
 
-    if (isset($picture) && $picture['error'] === UPLOAD_ERR_OK) {
-
-        $uuid = uniqid();
-        $extension = pathinfo($picture['name'], PATHINFO_EXTENSION);
+        $query = "INSERT INTO `hebergement`(`CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES (:type,:name,:nbplace,:surface,:internet,:dateheb,:secteur,:orientation,:state,:description,:picture,:pricing)";
 
 
-        $imgName = strtolower($uuid . '.' . $extension);
+        if (verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing)) {
 
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':type', $type);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':nbplace', $NBplace);
-        $stmt->bindParam(':surface', $surface);
-        $stmt->bindParam(':internet', $internet);
-        $stmt->bindParam(':dateheb', $dateHEB);
-        $stmt->bindParam(':secteur', $secteur);
-        $stmt->bindParam(':orientation', $orientation);
-        $stmt->bindParam(':state', $state);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':picture', $imgName);
-        $stmt->bindParam(':pricing', $pricing);
+            if (is_string($picture) || (isset($picture) && $picture['error'] === UPLOAD_ERR_OK)) {
+                if (is_string($picture)) {
+                    $imgName = $picture;
+                } else {
+                    $uuid = uniqid();
+                    $extension = pathinfo($picture['name'], PATHINFO_EXTENSION);
+                    $imgName = strtolower($uuid . '.' . $extension);
 
-        // try {
-        $stmt->execute();
+                    $path = '../../../ressouces/img/post/';
+                    $destinationPath = $path . $imgName;
 
-        $path = '../../../ressouces/img/post/';
-        $destinationPath = $path . $imgName;
+                    if (!move_uploaded_file($picture['tmp_name'], $destinationPath)) {
+                        return false;
+                    }
+                }
 
-        if (move_uploaded_file($picture['tmp_name'], $destinationPath)) {
-            return true;
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(':type', $type);
+                $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':nbplace', $NBplace);
+                $stmt->bindParam(':surface', $surface);
+                $stmt->bindParam(':internet', $internet);
+                $stmt->bindParam(':dateheb', $dateHEB);
+                $stmt->bindParam(':secteur', $secteur);
+                $stmt->bindParam(':orientation', $orientation);
+                $stmt->bindParam(':state', $state);
+                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':picture', $imgName);
+                $stmt->bindParam(':pricing', $pricing);
+
+
+                $stmt->execute();
+
+                return true;
+            }
+            return false;
+        } else {
+            return false;
         }
-        // } catch (Exception $e) {
-        // }
+    } catch (Exception $e) {
+        return false;
     }
+}
 
-    return false;
+function modifyHousing($id, $type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)
+{
+    try {
+        $query = "UPDATE `hebergement` SET `CODETYPEHEB`= :type, `NOMHEB`= :name, `NBPLACEHEB`=:nbplace, `SURFACEHEB`=:surface, `INTERNET`=:internet, `ANNEEHEB`=:dateheb, `SECTEURHEB`=:secteur, `ORIENTATIONHEB`=:orientation, `ETATHEB`=:state, `DESCRIHEB`=:description";
+
+        if (verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing)) {
+
+            if ($picture !== "") {
+                $query .= ", `PHOTOHEB`=:picture";
+            }
+
+            $query .= ", `TARIFSEMHEB`=:pricing WHERE `NOHEB` = :num";
+
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':num', $id);
+            $stmt->bindParam(':type', $type);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':nbplace', $NBplace);
+            $stmt->bindParam(':surface', $surface);
+            $stmt->bindParam(':internet', $internet);
+            $stmt->bindParam(':dateheb', $dateHEB);
+            $stmt->bindParam(':secteur', $secteur);
+            $stmt->bindParam(':orientation', $orientation);
+            $stmt->bindParam(':state', $state);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':pricing', $pricing);
+
+            if ($picture !== "") {
+                $uuid = uniqid();
+                $extension = pathinfo($picture['name'], PATHINFO_EXTENSION);
+                $imgName = strtolower($uuid . '.' . $extension);
+
+                $path = '../../../ressouces/img/post/';
+                $destinationPath = $path . $imgName;
+
+                if (!move_uploaded_file($picture['tmp_name'], $destinationPath)) {
+                    return false;
+                }
+                $stmt->bindParam(':picture', $imgName);
+            }
+
+            $stmt->execute();
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 
+
 // ----------------------  HOUSING TYPE ----------------------
-
-
-# **** we need to include bdd.php in file will use that function ****
 
 function addNewTypeHousing($id, $name, $pdo)
 {
@@ -114,6 +209,7 @@ function getSpecialHousingType($id, $pdo)
     $stmt->execute();
     return $stmt->fetch();
 }
+
 
 function getHousingType($pdo)
 {

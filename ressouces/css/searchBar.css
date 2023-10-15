@@ -1,3 +1,7 @@
+body{
+  height: auto;
+}
+
 form {
   width: 100%;
   display: flex;
@@ -20,7 +24,7 @@ select {
   margin: 10px;
 }
 
-button {
+a button, .search-button {
   font-family: "Manrope", sans-serif;
   font-size: 17px;
   color: #fff;
@@ -46,4 +50,14 @@ h2 {
   color: #f4511e;
   grid-area: 1 / 1 / 2 / 4;
   text-align: center;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
 }

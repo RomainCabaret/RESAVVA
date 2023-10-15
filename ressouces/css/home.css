@@ -269,11 +269,13 @@ header button.reg:hover {
   background: #fff;
   box-shadow: 0px 34.06929px 36.19862px 0px rgba(0, 0, 0, 0.13);
   margin: auto;
+  z-index: 10;
 }
 
 .rented-list .rented-container .card .placeholder-img {
-  width: 370px;
+  width: 100%;
   height: 280px;
+  border-radius: 26.617px 26.617px 0px 0px;
 }
 
 .rented-list .card .info-rented {
