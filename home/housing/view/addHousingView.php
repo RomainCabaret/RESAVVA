@@ -165,10 +165,10 @@ if (
                     <!-- <input type="text" name="secteur" id="secteur" placeholder="Entrer un nom" maxlength="15" <?php echo $modify ? "value='" . htmlspecialchars($housing['SECTEURHEB']) . "'" : "" ?> required /> -->
 
                     <select name="secteur" id="secteur">
-                        <option value="Zone Ski" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zone Ski" ? "selected" : "") : "" ?>>Zone Ski</option>
+                        <option value="Zone ski" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zone ski" ? "selected" : "") : "" ?>>Zone ski</option>
                         <option value="Zone pâturage" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zone pâturage" ? "selected" : "") : "" ?>>Zone pâturage</option>
                         <option value="Zone loisir" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zone loisir" ? "selected" : "") : "" ?>>Zone loisir</option>
-                        <option value="Zones Refuge" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zones Refuge" ? "selected" : "") : "" ?>>Zones Refuge</option>
+                        <option value="Zones refuge" <?php echo $modify ? ($housing['SECTEURHEB'] == "Zones refuge" ? "selected" : "") : "" ?>>Zones refuge</option>
                     </select>
 
                 </div>

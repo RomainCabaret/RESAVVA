@@ -93,7 +93,7 @@ $path = "./housing/view/housingView.php?id="
         <div class="rented-container">
 
             <?php if (count($housing) == 0) { ?>
-                <h2 class="errorMSG">Aucun logement pour cette recherche.</h2>
+                <h2 class="errorMSG">Aucun logement <?php echo (isset($_GET['search'])) ? "pour cette recherche." : "" ?></h2>
             <?php } ?>
             <?php
 

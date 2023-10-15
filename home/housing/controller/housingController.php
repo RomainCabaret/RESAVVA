@@ -10,7 +10,7 @@ function verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $sec
     $isSurfaceValid = (is_numeric($surface) && $surface >= 10 && $surface <= 1000);
     $isInternetValid = (is_numeric($internet) && $internet == 0 || $internet === 1);
     $isDateValid = (is_numeric($dateHEB) && $dateHEB >= 1975 && $dateHEB < (date('Y') + 1));
-    $isSecteurValid = (in_array($secteur, ['Zone Ski', 'Zone pâturage', 'Zone loisir', 'Zones Refuge']));
+    $isSecteurValid = (in_array($secteur, ['Zone ski', 'Zone pâturage', 'Zone loisir', 'Zones refuge']));
     $isOrientationValid = in_array($orientation, ['Nord', 'Sud', 'Est', 'West']);
     $isStateValid = in_array($state, ['Parfais', 'Bon', 'Correct', 'Renovation']);
     $isDescriptionValid = (strlen($description) <= 200);
@@ -21,7 +21,6 @@ function verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $sec
         $isNBplaceValid &&
         $isSurfaceValid &&
         $isInternetValid &&
-        $isDateValid &&
         $isDateValid &&
         $isSecteurValid &&
         $isOrientationValid &&
@@ -34,7 +33,19 @@ function verifyInput($type, $name, $NBplace, $surface, $internet, $dateHEB, $sec
     return false;
 }
 
+function verifyPicture($picture)
+{
+    $allowedSize = ($picture['size'] < 2097152); // 2 Mo (en octets)
+    $allowedTypes = (in_array(mime_content_type($picture['tmp_name']), ['image/jpeg', 'image/png', 'image/gif']));
 
+    if (
+        $allowedSize &&
+        $allowedTypes
+    ) {
+        return true;
+    }
+    return false;
+}
 
 // ---------------------- HOUSING ----------------------
 
@@ -95,6 +106,10 @@ function addNewHousing($type, $name, $NBplace, $surface, $internet, $dateHEB, $s
 
                     $path = '../../../ressouces/img/post/';
                     $destinationPath = $path . $imgName;
+
+                    if (!verifyPicture($picture)) {
+                        return false;
+                    }
 
                     if (!move_uploaded_file($picture['tmp_name'], $destinationPath)) {
                         return false;
@@ -163,6 +178,10 @@ function modifyHousing($id, $type, $name, $NBplace, $surface, $internet, $dateHE
 
                 $path = '../../../ressouces/img/post/';
                 $destinationPath = $path . $imgName;
+
+                if (!verifyPicture($picture)) {
+                    return false;
+                }
 
                 if (!move_uploaded_file($picture['tmp_name'], $destinationPath)) {
                     return false;
