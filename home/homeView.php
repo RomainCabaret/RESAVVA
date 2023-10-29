@@ -64,6 +64,7 @@ $path = "./housing/view/housingView.php?id="
         <?php
         if ($_SESSION['account']['TYPECOMPTE'] != "VIS") {
             echo '<a href="./housing/view/addHousingView.php"><button>Crée un hébergement</button></a>';
+            echo '<a href="./booking/view/bookingHomeView.php"><button>Gestionnaire</button></a>';
         }
         ?>
         <a href="temporalView.html"><button>View</button></a>

@@ -12,6 +12,7 @@ include '../../../bdd.php';
 include '../controller/housingController.php';
 include '../../../ressouces/component/select.php';
 
+
 $defaultHousingImage = "default-house-icon.png";
 $errorMSG = false;
 $modify = false;

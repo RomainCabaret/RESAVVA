@@ -3,86 +3,34 @@
 session_start();
 
 include '../../../bdd.php';
-
 include '../controller/bookingController.php';
-include '../../housing/controller/housingController.php';
+include '../../../ressouces/component/select.php';
 
 
-
-// if (
-//     #isset($_POST['type']) &&
-//     isset($_POST['name']) &&
-//     isset($_POST['nbplace']) &&
-//     isset($_POST['surface']) &&
-//     // isset($_POST['internet']) &&
-//     isset($_POST['dateheb']) &&
-//     isset($_POST['secteur']) &&
-//     isset($_POST['orientation']) &&
-//     isset($_POST['state']) &&
-//     isset($_POST['description']) &&
-//     isset($_FILES['picture']) &&
-//     isset($_POST['pricing'])
-// ) {
-//     $id = 250;
-//     $type = $_POST['CODETYPEHEB'];
-//     $name = $_POST['name'];
-//     $NBplace = $_POST['nbplace'];
-//     $surface = $_POST['surface'];
-//     $internet = isset($_POST['internet']) ? 1 : 0;
-//     $dateHEB = $_POST['dateheb'];
-//     $secteur = $_POST['secteur'];
-//     $orientation = $_POST['orientation'];
-//     $state = $_POST['state'];
-//     $description = $_POST['description'];
-//     $picture = $_FILES['picture'];
-//     $pricing = $_POST['pricing'];
-// }
-
-
-//$id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo
-
-$id = 12;
-$login = $_SESSION['account']['USER'];
-#$housingId = $_GET['id'];
-$housingId = 6;
-$housingType = "CC";
-$bookingPrice = 10;
-$pricePerWeek = 10;
-
-if (isset($_POST['amountPeople'])) {
-
-    $bookingStart = $_POST['bookingStart'];
-    $bookingEnd = $_POST['bookingEnd'];
-    $amountPeople = $_POST['amountPeople'];
-
-    #echo getSpecialBookingWeek('2023-09-01', '2023-09-30', $pdo)[0];
-
-    if (empty(getSpecialBookingWeek($bookingStart, $bookingEnd, $pdo)[0]['DATEDEBSEM'])) {
-        if (!addNewBookingWeek($bookingStart, $bookingEnd, $pdo)) {
-            die("error week");        
-        }
-    }
-
-    echo $amountPeople;
-    echo '<br>';
-    echo $bookingStart;
-    echo '<br>';
-    echo $bookingEnd;
-    
-    if(addNewBooking($login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)){
-        die ("GG");
-    }
-    else{
-        die("error");
-    }
-
-
+if (!isset($_SESSION['account']) || $_SESSION['account']['TYPECOMPTE'] == "VIS") {
+    header("location:./../../homeView.php");
 }
 
 
+$booking;
 
-// addNewBooking($id, $login, $dateStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo);
-// $housing = getSpecialHousing($id, $pdo);
+
+if (isset($_GET['id']) && !empty(getSpecialBooking($_GET['id'], $pdo))) {
+    $id = $_GET['id'];
+    $booking = getSpecialBooking($id, $pdo);
+} else {
+    header('location:../../homeView.php');
+}
+
+
+if (isset($_POST['CODEETATRESA'])) {
+    if (modifyBookingState($_GET['id'], $_POST['CODEETATRESA'], $pdo)) {
+        header("location:./bookingHomeView.php");
+    } else {
+        echo ":(";
+    }
+}
+
 
 ?>
 
@@ -92,27 +40,29 @@ if (isset($_POST['amountPeople'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="shortcut icon" href="../../../ressouces/img/ico/favicon.png" type="image/x-icon">
+    <title>RESA - VVA - <?php echo $booking['NORESA'] ?></title>
 </head>
 
 <body>
-    <h1>Réserver</h1>
-
-    <form action="./bookingView.php" method="post">
-        <label for="amountPeople">Nombre d'occupant</label>
-        <input type="number" id="amountPeople" name="amountPeople">
-
-        <label for="bookingStart">Date debut réservation</label>
-        <input type="date" name="bookingStart" id="bookingStart">
-
-        <label for="bookingEnd">Date fin réservation</label>
-        <input type="date" name="bookingEnd" id="bookingEnd">
-
-
-        <button>Valider la réservation</button>
+    <h1>House</h1>
+    <form action="" method="post">
+        <ul>
+            <?php
+            echo "<li> <b>Numero Résa</b> : " . htmlspecialchars($booking['NORESA']) . "</li>";
+            echo "<li> <b>Réservant</b> : " . htmlspecialchars($booking['USER']) . "</li>";
+            echo "<li> <b>Date debut</b> :  " . htmlspecialchars($booking['DATEDEBSEM']) . "</li>";
+            echo "<li> <b>Date fin</b> : " . htmlspecialchars($booking['DATEARRHES']) . "</li>";
+            echo "<li> <b>Numero Hebergement</b> : " . htmlspecialchars($booking['NOHEB']) . "</li>";
+            echo "<li> <b>Etape résa</b> : " . htmlspecialchars($booking['NOMETATRESA']) . "</li>";
+            echo "<li> <b>Montant Arres </b> : " . htmlspecialchars($booking['MONTANTARRHES']) . "</li>";
+            echo "<li> <b>Nombre d'occupant</b> : " . htmlspecialchars($booking['NBOCCUPANT']) . "</li>";
+            echo "<li> <b>TARIF SEMAINE</b> : " . htmlspecialchars($booking['TARIFSEMRESA']) . "</li>";
+            showSelect(getBookingState($pdo), "CODEETATRESA", "NOMETATRESA", $booking['CODEETATRESA'])
+            ?>
+        </ul>
+        <button>Modifier</button>
     </form>
-
-
 </body>
 
 </html>

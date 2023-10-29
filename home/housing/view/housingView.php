@@ -52,7 +52,7 @@ if (isset($_GET['id']) && !empty(getSpecialHousing($_GET['id'], $pdo))) {
         echo "<li> <b>Tarif</b> : " . htmlspecialchars($housing['TARIFSEMHEB']) . "</li>";
         ?>
     </ul>
-    <a href="./../../booking/view/bookingView.php?id=<?php echo $housing['NOHEB']; ?>">
+    <a href="./../../booking/view/addbookingView.php?id=<?php echo $housing['NOHEB']; ?>">
         <button>Réserver</button>
     </a>
     <?php

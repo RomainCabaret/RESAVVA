@@ -1,6 +1,36 @@
 <?php
 
 
+// ---------------------- VERIFICATION ----------------------
+
+
+function verifyDate($start, $end)
+{
+
+    try {
+
+        $timeStart = strtotime($start);
+        $timeEnd = strtotime($end);
+
+        $isDifferent = ($timeStart != $timeEnd);
+        $isDateValid = ($timeStart < $timeEnd);
+        $isStartValid = (date('w', $timeStart) == 6); # Samedi
+        $isEndValid = (date('w', $timeEnd) == 6); # Samedi
+
+        if (
+            $isDifferent &&
+            $isDateValid &&
+            $isStartValid &&
+            $isEndValid
+        ) {
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 
 // ---------------------- WEEK BOOK ----------------------
 
@@ -14,10 +44,14 @@ function addNewBookingWeek($start, $end, $pdo)
     $stmt->bindParam(':start', $start);
     $stmt->bindParam(':end', $end);
 
-    try {
-        $stmt->execute();
-        return true;
-    } catch (Exception $e) {
+    if (verifyDate($start, $end)) {
+        try {
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    } else {
         return false;
     }
 }
@@ -50,7 +84,7 @@ function getBooking($pdo)
 
 function getSpecialBooking($id, $pdo)
 {
-    $query =  "SELECT `NORESA`, `USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA` FROM `resa` WHERE `NORESA` = :id";
+    $query =  "SELECT `NORESA`, `USER`, r.`DATEDEBSEM`, `NOHEB`, r.`CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`, e.NOMETATRESA FROM `resa` r INNER JOIN etat_resa e ON r.CODEETATRESA = e.CODEETATRESA WHERE `NORESA` = :id ";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
@@ -58,12 +92,25 @@ function getSpecialBooking($id, $pdo)
     return $stmt->fetch();
 }
 
-function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
+function getSearchBooking($start, $end, $pdo)
 {
-    $query = "INSERT INTO `resa` (`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES (:user, :dateStart, :housing, :typeHousing, :dateBooking , :dateEnd, :priceBooking, :amountPeople, :pricePerWeek );";
+    $query =  "SELECT `NORESA`, `USER`, r.`DATEDEBSEM`, `NOHEB`, r.`CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`, e.NOMETATRESA FROM `resa` r INNER JOIN etat_resa e ON r.CODEETATRESA = e.CODEETATRESA WHERE `DATEDEBSEM` >= :start AND `DATEARRHES` <= :end ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':start', $start);
+    $stmt->bindParam(':end', $end);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function addNewBooking($id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
+{
+    $query = "INSERT INTO `resa` (`NORESA`,`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES (:id ,:user, :dateStart, :housing, :typeHousing, :dateBooking , :dateEnd, :priceBooking, :amountPeople, :pricePerWeek );";
 
 
     $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':user', $user);
     $stmt->bindParam(':dateStart', $dateStart);
     $stmt->bindParam(':housing', $housing);
@@ -79,12 +126,30 @@ function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, 
         $stmt->execute();
         return true;
     } catch (Exception $e) {
+        echo $e->getMessage();
+        return false;
+    }
+}
+
+function modifyBookingState($id, $newState, $pdo)
+{
+    $query = "UPDATE `resa` SET `CODEETATRESA`= :newState WHERE `NORESA` = :id ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':newState', $newState);
+
+    try {
+        $stmt->execute();
+        return true;
+    } catch (Exception $e) {
+        echo $e->getMessage();
         return false;
     }
 }
 
 
-// ----------------------  HOUSING STATE ----------------------
+// ----------------------  BOOKING STATE ----------------------
 
 
 # **** we need to include bdd.php in file will use that function ****
