@@ -109,7 +109,7 @@ function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, 
     $query = "INSERT INTO `resa` (`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) 
           SELECT :user, :dateStart, :housing, :typeHousing, :dateBooking, :priceBooking, :amountPeople, :pricePerWeek 
           FROM dual 
-          WHERE NOT EXISTS (SELECT 1 FROM `resa` WHERE `NOHEB` = :housing AND `DATEDEBSEM` = :dateStart)";
+          WHERE NOT EXISTS (SELECT 1 FROM `resa` WHERE (`NOHEB` = :housing AND `DATEDEBSEM` = :dateStart) OR `USER` = :user AND `DATEDEBSEM` = :dateStart)";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':user', $user);
@@ -124,12 +124,12 @@ function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, 
     try {
         $result = $stmt->execute();
         if ($result && $stmt->rowCount() > 0) {
-            return true;
+            // Retrieve the last inserted ID
+            return $pdo->lastInsertId();
         } else {
             return false;
         }
     } catch (Exception $e) {
-        echo $e->getMessage();
         return false;
     }
 }

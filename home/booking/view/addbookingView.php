@@ -9,38 +9,6 @@ include '../../housing/controller/housingController.php';
 
 
 
-// if (
-//     #isset($_POST['type']) &&
-//     isset($_POST['name']) &&
-//     isset($_POST['nbplace']) &&
-//     isset($_POST['surface']) &&
-//     // isset($_POST['internet']) &&
-//     isset($_POST['dateheb']) &&
-//     isset($_POST['secteur']) &&
-//     isset($_POST['orientation']) &&
-//     isset($_POST['state']) &&
-//     isset($_POST['description']) &&
-//     isset($_FILES['picture']) &&
-//     isset($_POST['pricing'])
-// ) {
-//     $id = 250;
-//     $type = $_POST['CODETYPEHEB'];
-//     $name = $_POST['name'];
-//     $NBplace = $_POST['nbplace'];
-//     $surface = $_POST['surface'];
-//     $internet = isset($_POST['internet']) ? 1 : 0;
-//     $dateHEB = $_POST['dateheb'];
-//     $secteur = $_POST['secteur'];
-//     $orientation = $_POST['orientation'];
-//     $state = $_POST['state'];
-//     $description = $_POST['description'];
-//     $picture = $_FILES['picture'];
-//     $pricing = $_POST['pricing'];
-// }
-
-
-//$id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo
-
 if (!isset($_SESSION['account'])) {
     header("location:./../../homeView.php");
 }
@@ -76,37 +44,36 @@ if (isset($_POST['amountPeople'])) {
     $interval = $start->diff($end);
     $intervalInWeeks = floor($interval->days / 7);
 
-    echo "L'intervalle en semaine est de : " . $intervalInWeeks . " semaines";
+    if($start == $end){
+        echo "Date incorrect, veuillez selection une semaine";
+    }else{
 
-    if (empty(getSpecialBookingWeek($bookingStart, $bookingEnd, $pdo)[0]['DATEDEBSEM'])) {
-        if (!addNewBookingWeek($bookingStart, $bookingEnd, $pdo)) {
-            die("error week");
+        #echo "L'intervalle en semaine est de : " . $intervalInWeeks . " semaines";
+    
+        if (empty(getSpecialBookingWeek($bookingStart, $bookingEnd, $pdo)[0]['DATEDEBSEM'])) {
+            if (!addNewBookingWeek($bookingStart, $bookingEnd, $pdo)) {
+                #die("error week");
+            }
+        }
+    
+        echo '<br>';
+    
+    
+        $bookingPrice = ($housing['TARIFSEMHEB'] * $intervalInWeeks) * 0.20; # MONTANTARRHES ?
+    
+    
+        $result = addNewBooking($login, $bookingStart, $housingId, $bookingType, date('Y-m-d'), $bookingPrice, $amountPeople, $pricePerWeek, $pdo);
+    
+    
+        echo '<a href="../../homeView.php">Retour à l\'acceil</a>';
+        echo '<br>';
+        if ($result !== false) {
+            die("Votre réservation a bien été enregistrée avec le numéro : " . $result);
+        } else {
+            die(":/ Vous avez deja réservé une réservation");
         }
     }
 
-    echo '<br>';
-
-    echo $amountPeople;
-    echo '<br>';
-    echo $bookingStart;
-    echo '<br>';
-    echo $bookingEnd;
-
-    $bookingPrice = $housing['TARIFSEMHEB'] * $intervalInWeeks; # MONTANTARRHES ?
-
-
-
-    // if (verifyDate($bookingStart, $bookingEnd)) {
-    //     echo "Date Valid";
-    // } else {
-    //     echo "Date Non Valid";
-    // }
-
-    if (addNewBooking($login, $bookingStart, $housingId, $bookingType, $bookingStart, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)) {
-        die("GG");
-    } else {
-        die("error");
-    }
 }
 
 
@@ -131,10 +98,13 @@ if (isset($_POST['amountPeople'])) {
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <!-- Fichier de traduction pour le français -->
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.fr.js"></script>
+
+    <link rel="stylesheet" href="../../../ressouces/css/searchBar.css" />
+
 </head>
 
 <body>
-    <h1>Réserver</h1>
+    <h1 class="main">Réserver</h1>
 
     <form action="" method="post">
         <label for="amountPeople">Nombre d'occupant</label>
@@ -159,6 +129,7 @@ if (isset($_POST['amountPeople'])) {
                 foreach (getHousingBookingWeek($housing['NOHEB'], $pdo) as $row) {
                     $excludeDateDeb = $row['DATEDEBSEM'];
                     $excludeDateEnd = date('Y-m-d', strtotime($row['DATEDEBSEM'] . ' + 6 days'));
+
                     echo "[moment('$excludeDateDeb'), moment('$excludeDateEnd')],\n";
                 }
 
