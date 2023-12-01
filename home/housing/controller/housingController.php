@@ -59,9 +59,9 @@ function getSpecialHousing($id, $pdo)
     return $stmt->fetch();
 }
 
-function getSearchHousing($search, $type, $pdo)
+function getSearchHousing($search, $type, $dateDeb, $pdo)
 {
-    $query = "SELECT * FROM `hebergement` WHERE `NOMHEB` LIKE :search AND `CODETYPEHEB` LIKE :type ";
+    $query = "SELECT * FROM `hebergement` WHERE `NOMHEB` LIKE :search AND `CODETYPEHEB` LIKE :type AND `NOHEB` NOT IN (SELECT `NOHEB` FROM `resa` WHERE `DATEDEBSEM` = :dateDeb)";
     $stmt = $pdo->prepare($query);
 
     $search = "%" . $search . "%";
@@ -70,10 +70,13 @@ function getSearchHousing($search, $type, $pdo)
 
     $stmt->bindParam(':search', $search);
     $stmt->bindParam(':type', $type);
+    $stmt->bindParam(':dateDeb', $dateDeb);
+
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function getHousing($pdo)
 {
@@ -86,6 +89,7 @@ function getHousing($pdo)
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function addNewHousing($type, $name, $NBplace, $surface, $internet, $dateHEB, $secteur, $orientation, $state, $description, $picture, $pricing, $pdo)
 {

@@ -104,27 +104,30 @@ function getSearchBooking($start, $end, $pdo)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function addNewBooking($id, $user, $dateStart, $housing, $typeHousing, $dateBooking, $dateEnd, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
+function addNewBooking($user, $dateStart, $housing, $typeHousing, $dateBooking, $priceBooking, $amountPeople, $pricePerWeek, $pdo)
 {
-    $query = "INSERT INTO `resa` (`NORESA`,`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES (:id ,:user, :dateStart, :housing, :typeHousing, :dateBooking , :dateEnd, :priceBooking, :amountPeople, :pricePerWeek );";
-
+    $query = "INSERT INTO `resa` (`USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) 
+          SELECT :user, :dateStart, :housing, :typeHousing, :dateBooking, :priceBooking, :amountPeople, :pricePerWeek 
+          FROM dual 
+          WHERE NOT EXISTS (SELECT 1 FROM `resa` WHERE `NOHEB` = :housing AND `DATEDEBSEM` = :dateStart)";
 
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':user', $user);
     $stmt->bindParam(':dateStart', $dateStart);
     $stmt->bindParam(':housing', $housing);
     $stmt->bindParam(':typeHousing', $typeHousing);
     $stmt->bindParam(':dateBooking', $dateBooking);
-    $stmt->bindParam(':dateEnd', $dateEnd);
     $stmt->bindParam(':priceBooking', $priceBooking);
     $stmt->bindParam(':amountPeople', $amountPeople);
     $stmt->bindParam(':pricePerWeek', $pricePerWeek);
 
-
     try {
-        $stmt->execute();
-        return true;
+        $result = $stmt->execute();
+        if ($result && $stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     } catch (Exception $e) {
         echo $e->getMessage();
         return false;
@@ -148,7 +151,18 @@ function modifyBookingState($id, $newState, $pdo)
     }
 }
 
+function getHousingBookingWeek($idHousing, $pdo)
+{
 
+    $query = "SELECT `DATEDEBSEM` FROM `resa` WHERE `NOHEB` = :idHeb";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam('idHeb', $idHousing);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 // ----------------------  BOOKING STATE ----------------------
 
 

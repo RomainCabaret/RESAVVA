@@ -55,17 +55,17 @@ if (isset($_GET['id']) && !empty(getSpecialHousing($_GET['id'], $pdo))) {
     header('location:../../homeView.php');
 }
 
-$id = $housing['NOHEB'] . $housing['ANNEEHEB'];
 $login = $_SESSION['account']['USER'];
-#$housingId = $_GET['id'];
 $housingId = $housing['NOHEB'];
-$housingType = "AV";
+$bookingType = "AV";
 $pricePerWeek =  $housing['TARIFSEMHEB'];
 
 if (isset($_POST['amountPeople'])) {
 
-    $bookingStart = $_POST['bookingStart'];
-    $bookingEnd = $_POST['bookingEnd'];
+    $dates = explode(" - ", $_POST['date']); # 2023-11-25 - 2023-12-02 
+
+    $bookingStart = str_replace(' ', '', $dates[0]); #2023-11-25
+    $bookingEnd = str_replace(' ', '', $dates[1]); #2023-12-02
     $amountPeople = $_POST['amountPeople'];
 
     #echo getSpecialBookingWeek('2023-09-01', '2023-09-30', $pdo)[0];
@@ -92,7 +92,7 @@ if (isset($_POST['amountPeople'])) {
     echo '<br>';
     echo $bookingEnd;
 
-    $bookingPrice = 10 * $intervalInWeeks;
+    $bookingPrice = $housing['TARIFSEMHEB'] * $intervalInWeeks; # MONTANTARRHES ?
 
 
 
@@ -102,7 +102,7 @@ if (isset($_POST['amountPeople'])) {
     //     echo "Date Non Valid";
     // }
 
-    if (addNewBooking($id, $login, $bookingStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)) {
+    if (addNewBooking($login, $bookingStart, $housingId, $bookingType, $bookingStart, $bookingPrice, $amountPeople, $pricePerWeek, $pdo)) {
         die("GG");
     } else {
         die("error");
@@ -111,7 +111,7 @@ if (isset($_POST['amountPeople'])) {
 
 
 
-// addNewBooking($id, $login, $dateStart, $housingId, $housingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo);
+// addNewBooking($id, $login, $dateStart, $housingId, $bookingType, $bookingStart, $bookingEnd, $bookingPrice, $amountPeople, $pricePerWeek, $pdo);
 // $housing = getSpecialHousing($id, $pdo);
 
 ?>
@@ -123,10 +123,14 @@ if (isset($_POST['amountPeople'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Fichier de traduction pour le français -->
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.fr.js"></script>
 </head>
 
 <body>
@@ -134,16 +138,10 @@ if (isset($_POST['amountPeople'])) {
 
     <form action="" method="post">
         <label for="amountPeople">Nombre d'occupant</label>
-        <input type="number" id="amountPeople" name="amountPeople">
+        <input type="number" id="amountPeople" name="amountPeople" value="1" max="<?php echo $housing['NBPLACEHEB'] ?>">
 
-        <label for="bookingStart">Date debut réservation</label>
-        <input type="date" name="bookingStart" id="bookingStart">
-
-        <label for="bookingEnd">Date fin réservation</label>
-        <input type="date" name="bookingEnd" id="bookingEnd">
-
-        <input type="text" name="datefilter" value="" />
-
+        <label for="date-range">Date réservation</label>
+        <input type="text" id="date-range" name="date" placeholder="xxxx-xx-xx" required>
 
 
         <button>Valider la réservation</button>
@@ -151,35 +149,57 @@ if (isset($_POST['amountPeople'])) {
 
     <script>
         $(function() {
+            moment.locale('fr');
 
-            $('input[name="datefilter"]').daterangepicker({
-                "maxSpan": {
-                    "days": 7
-                },
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                autoUpdateInput: false,
-                minDate: "<?php echo Date("m/d/Y"); ?>",
-                // minDate: "10/26/2023",
+            //semaines à exclure
+            var weeksToExclude = [
+                // [moment('2023-11-25'), moment('2023-12-02')], // Exclure 25 novembre au 2 décembre 2023
+                // [moment('2023-12-09'), moment('2023-12-16')], // Exclure 9 décembre au 16 décembre 2023
+                <?php
+                foreach (getHousingBookingWeek($housing['NOHEB'], $pdo) as $row) {
+                    $excludeDateDeb = $row['DATEDEBSEM'];
+                    $excludeDateEnd = date('Y-m-d', strtotime($row['DATEDEBSEM'] . ' + 6 days'));
+                    echo "[moment('$excludeDateDeb'), moment('$excludeDateEnd')],\n";
+                }
+
+                ?>
+            ];
+
+            $('#date-range').daterangepicker({
+                opens: 'left',
                 locale: {
-                    cancelLabel: 'Clear'
+                    format: 'YYYY-MM-DD',
+                    applyLabel: 'Appliquer',
+                    cancelLabel: 'Annuler',
+                    daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                    monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                    firstDay: 6 // Commence à Samedi
+                },
+                minDate: moment().startOf('day'), // uniquement dates futures
+                isInvalidDate: function(date) {
+                    // date à exclure
+                    for (var i = 0; i < weeksToExclude.length; i++) {
+                        if (date.isBetween(weeksToExclude[i][0], weeksToExclude[i][1], null, '[]')) {
+                            return true;
+                        }
+                    }
+                    return date.isoWeekday() !== 6; // Désactive autres jours
+                },
+                maxSpan: {
+                    days: 7
                 }
             });
 
-            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-            });
+            // Événement sélectionné plage
+            $('#date-range').on('apply.daterangepicker', function(ev, picker) {
 
-            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-                $(this).val('');
+                // Vérifie si la plage de dates sélectionnée est du samedi au samedi
+                if (picker.startDate.isoWeekday() !== 6 || picker.endDate.isoWeekday() !== 6) {
+                    alert('Veuillez sélectionner une plage de dates du samedi au samedi.');
+                    // Réinitialise le champ de saisie
+                    $(this).val('');
+                }
             });
-
         });
     </script>
 

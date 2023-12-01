@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 15, 2023 at 03:05 PM
+-- Generation Time: Dec 01, 2023 at 05:14 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -97,6 +97,16 @@ CREATE TABLE `hebergement` (
   `TARIFSEMHEB` decimal(7,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `hebergement`
+--
+
+INSERT INTO `hebergement` (`NOHEB`, `CODETYPEHEB`, `NOMHEB`, `NBPLACEHEB`, `SURFACEHEB`, `INTERNET`, `ANNEEHEB`, `SECTEURHEB`, `ORIENTATIONHEB`, `ETATHEB`, `DESCRIHEB`, `PHOTOHEB`, `TARIFSEMHEB`) VALUES
+(28, 'BUNGA', 'bungalow', 5, 10, 1, 2023, 'Zone pâturage', 'Nord', 'Parfais', 'aa', '653aae9d0b0cb.png', '20.00'),
+(29, 'APPAR', 'fullstack', 1, 10, 1, 2023, 'Zone ski', 'Nord', 'Bon', 'yyy', 'default-house-icon.png', '1165.15'),
+(30, 'CHALE', '<h1>cheval 2</h1>', 1, 10, 1, 2023, 'Zone pâturage', 'Sud', 'Bon', 'XDDDD', '653bdbb69fcd8.png', '20.00'),
+(31, 'APPAR', 'aa', 5, 12, 1, 2023, 'Zone ski', 'Nord', 'Parfais', 'aa', 'default-house-icon.png', '21.00');
+
 -- --------------------------------------------------------
 
 --
@@ -116,6 +126,15 @@ CREATE TABLE `resa` (
   `TARIFSEMRESA` decimal(7,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `resa`
+--
+
+INSERT INTO `resa` (`NORESA`, `USER`, `DATEDEBSEM`, `NOHEB`, `CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`) VALUES
+(2, 'aa', '2023-12-23', 28, 'AV', '2023-12-23', NULL, '20.00', 1, '20.00'),
+(6, 'aa', '2023-12-09', 28, 'AV', '2023-12-09', NULL, '20.00', 1, '20.00'),
+(7, 'aa', '2024-01-06', 28, 'AV', '2024-01-06', NULL, '20.00', 3, '20.00');
+
 -- --------------------------------------------------------
 
 --
@@ -126,6 +145,19 @@ CREATE TABLE `semaine` (
   `DATEDEBSEM` date NOT NULL,
   `DATEFINSEM` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `semaine`
+--
+
+INSERT INTO `semaine` (`DATEDEBSEM`, `DATEFINSEM`) VALUES
+('2023-10-28', '2023-11-04'),
+('2023-11-27', '2023-11-05'),
+('2023-12-02', '2023-12-09'),
+('2023-12-09', '2023-12-16'),
+('2023-12-23', '2023-12-30'),
+('2024-01-06', '2024-01-13'),
+('2024-01-20', '2024-01-27');
 
 -- --------------------------------------------------------
 
@@ -202,13 +234,13 @@ ALTER TABLE `type_heb`
 -- AUTO_INCREMENT for table `hebergement`
 --
 ALTER TABLE `hebergement`
-  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `NOHEB` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `resa`
 --
 ALTER TABLE `resa`
-  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `NORESA` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
