@@ -56,6 +56,18 @@ function addNewBookingWeek($start, $end, $pdo)
     }
 }
 
+function getSimpleBookingWeek($start, $pdo)
+{
+    $query = "SELECT `DATEDEBSEM`, `DATEFINSEM` FROM `semaine` WHERE `DATEDEBSEM` = :start";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':start', $start, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 function getSpecialBookingWeek($start, $end, $pdo)
 {
     $query = "SELECT `DATEDEBSEM`, `DATEFINSEM` FROM `semaine` WHERE `DATEDEBSEM` >= :start AND `DATEFINSEM` <= :end";
@@ -94,7 +106,7 @@ function getSpecialBooking($id, $pdo)
 
 function getSearchBooking($start, $end, $pdo)
 {
-    $query =  "SELECT `NORESA`, `USER`, r.`DATEDEBSEM`, `NOHEB`, r.`CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`, e.NOMETATRESA FROM `resa` r INNER JOIN etat_resa e ON r.CODEETATRESA = e.CODEETATRESA WHERE `DATEDEBSEM` >= :start AND `DATEARRHES` <= :end ";
+    $query =  "SELECT `NORESA`, `USER`, r.`DATEDEBSEM`, `NOHEB`, r.`CODEETATRESA`, `DATERESA`, `DATEARRHES`, `MONTANTARRHES`, `NBOCCUPANT`, `TARIFSEMRESA`, e.NOMETATRESA FROM `resa` r INNER JOIN etat_resa e ON r.CODEETATRESA = e.CODEETATRESA INNER JOIN semaine s ON s.DATEDEBSEM = r.DATEDEBSEM WHERE r.`DATEDEBSEM` >= :start AND s.DATEFINSEM <= :end ";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':start', $start);

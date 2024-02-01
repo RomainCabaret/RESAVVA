@@ -25,7 +25,7 @@ if (isset($_GET['id']) && !empty(getSpecialHousing($_GET['id'], $pdo))) {
 
 $login = $_SESSION['account']['USER'];
 $housingId = $housing['NOHEB'];
-$bookingType = "AV";
+$bookingType = "BL";
 $pricePerWeek =  $housing['TARIFSEMHEB'];
 
 if (isset($_POST['amountPeople'])) {

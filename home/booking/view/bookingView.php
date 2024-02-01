@@ -22,15 +22,33 @@ if (isset($_GET['id']) && !empty(getSpecialBooking($_GET['id'], $pdo))) {
     header('location:../../homeView.php');
 }
 
+$bookingWeek = getSimpleBookingWeek($booking['DATEDEBSEM'], $pdo);
+
+
 
 if (isset($_POST['CODEETATRESA'])) {
-    if (modifyBookingState($_GET['id'], $_POST['CODEETATRESA'], $pdo)) {
-        header("location:./bookingHomeView.php");
+
+    if (DateTime::createFromFormat('Y-m-d', $bookingWeek['DATEFINSEM']) > new DateTime()) {
+        if ($_POST['CODEETATRESA'] != 'BL') {
+            $query = "UPDATE `resa` SET `DATEARRHES`= now() WHERE `NORESA` = :id AND DATEARRHES = null ";
+
+            try {
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(':id', $_GET['id']);
+                $stmt->execute();
+                if (modifyBookingState($_GET['id'], $_POST['CODEETATRESA'], $pdo)) {
+                    header("location:./bookingHomeView.php");
+                } else {
+                    echo "Erreur interne";
+                }
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+        }
     } else {
-        echo ":(";
+        echo "Le gestionnaire ne peut pas modifier une réservation dont la date de fin de séjour est écoulée.";
     }
 }
-
 
 ?>
 
@@ -52,7 +70,7 @@ if (isset($_POST['CODEETATRESA'])) {
             echo "<li> <b>Numero Résa</b> : " . htmlspecialchars($booking['NORESA']) . "</li>";
             echo "<li> <b>Réservant</b> : " . htmlspecialchars($booking['USER']) . "</li>";
             echo "<li> <b>Date debut</b> :  " . htmlspecialchars($booking['DATEDEBSEM']) . "</li>";
-            echo "<li> <b>Date fin</b> : " . htmlspecialchars($booking['DATEARRHES']) . "</li>";
+            echo "<li> <b>Date fin</b> : " . htmlspecialchars($bookingWeek['DATEFINSEM']) . "</li>";
             echo "<li> <b>Numero Hebergement</b> : " . htmlspecialchars($booking['NOHEB']) . "</li>";
             echo "<li> <b>Etape résa</b> : " . htmlspecialchars($booking['NOMETATRESA']) . "</li>";
             echo "<li> <b>Montant Arres </b> : " . htmlspecialchars($booking['MONTANTARRHES']) . "</li>";
